@@ -8,7 +8,7 @@ from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 from knn import KNNClassifier
 from metrics import binary_classification_metrics, multiclass_accuracy
-SEED = 111
+SEED = 666
 random.seed(SEED)
 np.random.seed(SEED)
 #X, y = fetch_openml(name="Fashion-MNIST", return_X_y=True, as_frame=False)
@@ -20,11 +20,11 @@ X = X[idx_to_stay]
 y = y[idx_to_stay]
 x_train, x_test, y_train, y_test = train_test_split(X, y)
 criteria = (y_train == '1') | (y_train == '0')
-binary_train_y = y_train[criteria]
-binary_train_X = x_train[criteria]
+binary_train_y = y_train#[criteria]
+binary_train_X = x_train#[criteria]
 criteria_test = (y_test == '1') | (y_test == '0')
-binary_test_y = y_test[criteria_test]
-binary_test_X = x_test[criteria_test]
+binary_test_y = y_test#[criteria_test]
+binary_test_X = x_test#[criteria_test]
 import knn
 knn_classifier = KNNClassifier(k=1)
 knn_classifier.fit(binary_train_X, binary_train_y)
