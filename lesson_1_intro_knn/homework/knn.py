@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+import scipy.stats
 
 
 class KNNClassifier:
@@ -15,9 +17,9 @@ class KNNClassifier:
         self.train_y = y
 
 
-    def predict(self, X, n_loops=0):
+    def predict(self, X, n_loops=1):
         """
-        Uses the KNN model to predict clases for the data samples provided
+        Uses the KNN model to predict classes for the data samples provided
         
         Arguments:
         X, np array (num_samples, num_features) - samples to run
@@ -36,11 +38,12 @@ class KNNClassifier:
         else:
             distances = self.compute_distances_two_loops(X)
         
-        if len(np.unique(self.train_y)) == 2:
-            return self.predict_labels_binary(distances)
-        else:
-            return self.predict_labels_multiclass(distances)
+        # if len(np.unique(self.train_y)) == 2:
+        #     return self.predict_labels_binary(distances)
+        # else:
+        #     return self.predict_labels_multiclass(distances)
 
+        return self.predict_labels_multiclass(distances)
 
     def compute_distances_two_loops(self, X):
         """
@@ -60,7 +63,7 @@ class KNNClassifier:
                 matrix_distance[u][v] = np.sum(np.abs(X[u, :] - self.train_X[v, :]))
         return matrix_distance
 
-    def compute_distances_one_loop(self, X):
+    def compute_distances_one_loops(self, X):
         """
         Computes L1 distance from every sample of X to every training sample
         Vectorizes some of the calculations, so only 1 loop is used
@@ -130,11 +133,15 @@ class KNNClassifier:
            for every test sample
         """
 
-        n_train = distances.shape[0]
+        #n_train = distances.shape[0]
         n_test = distances.shape[0]
-        prediction = np.zeros(n_test, np.int)
-
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+        prediction = ['']*n_test
+        for t in range(0, n_test):
+            neighbours = ['']*self.k
+            temp_dist = distances[t].copy()
+            for i in range(0, self.k):
+                min_index = np.nanargmin(temp_dist)
+                neighbours[i] = self.train_y[min_index]
+                temp_dist[min_index] = np.nan
+            prediction[t] = scipy.stats.mode(neighbours).mode[0]
+        return prediction

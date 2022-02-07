@@ -26,16 +26,17 @@ criteria_test = (y_test == '1') | (y_test == '0')
 binary_test_y = y_test#[criteria_test]
 binary_test_X = x_test#[criteria_test]
 import knn
-knn_classifier = KNNClassifier(k=1)
+knn_classifier = KNNClassifier(k=3)
 knn_classifier.fit(binary_train_X, binary_train_y)
 # TODO: compute_distances_two_loops
 dists = knn_classifier.compute_distances_two_loops(binary_test_X)
 assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
-# TODO: compute_distances_one_loop
-dists = knn_classifier.compute_distances_one_loop(binary_test_X)
+# TODO: compute_distances_one_loops
+dists = knn_classifier.compute_distances_one_loops(binary_test_X)
 assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
 # TODO: compute_distances_no_loops
 dists = knn_classifier.compute_distances_no_loops(binary_test_X)
 assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
-
+# TODO: predict_labels_binary in knn.py
+prediction = knn_classifier.predict(binary_test_X)
 
