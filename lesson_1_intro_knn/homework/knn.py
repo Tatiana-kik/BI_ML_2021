@@ -57,11 +57,7 @@ class KNNClassifier:
         matrix_distance = np.zeros(shape=(len(X), len(self.train_X)))
         for u in range(0, len(X)):
             for v in range(0, len(self.train_X)):
-                sum_crd = 0
-                for i in range(0, 784):
-                    sum_crd += abs(X[u][i] - self.train_X[v][i])
-                matrix_distance[u][v] = sum_crd
-            pass
+                matrix_distance[u][v] = np.sum(np.abs(X[u, :] - self.train_X[v, :]))
         return matrix_distance
 
     def compute_distances_one_loop(self, X):
@@ -77,11 +73,12 @@ class KNNClassifier:
            with distances between each test and each train sample
         """
 
-        """
-        YOUR CODE IS HERE
-        """
-        pass
-
+        num_test = X.shape[0]
+        num_train = self.train_X.shape[0]
+        matrix_distance = np.zeros((num_test, num_train))
+        for i in range(num_test):
+            matrix_distance[i, :] = np.sum(np.abs(self.train_X - X[i, :]), axis=1)
+        return matrix_distance
 
     def compute_distances_no_loops(self, X):
         """
@@ -96,11 +93,8 @@ class KNNClassifier:
            with distances between each test and each train sample
         """
 
-        """
-        YOUR CODE IS HERE
-        """
-        pass
-
+        matrix_distance = np.abs(X[:, None] - self.train_X).sum(-1)
+        return matrix_distance
 
     def predict_labels_binary(self, distances):
         """
