@@ -54,12 +54,15 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
-        
-        """
-        YOUR CODE IS HERE
-        """
-        pass
-
+        matrix_distance = np.zeros(shape=(len(self.train_X), len(X)))
+        for u in range(0, len(X)):
+            for v in range(0, len(self.train_X)):
+                sum_crd = 0
+                for i in range(0, 784):
+                    sum_crd += abs(X[u][i] - self.train_X[v][i])
+                matrix_distance[v][u] = sum_crd
+            pass
+        return matrix_distance
 
     def compute_distances_one_loop(self, X):
         """
