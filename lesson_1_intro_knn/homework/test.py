@@ -39,4 +39,5 @@ dists = knn_classifier.compute_distances_no_loops(binary_test_X)
 assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
 # TODO: predict_labels_binary in knn.py
 prediction = knn_classifier.predict(binary_test_X)
+print(binary_classification_metrics(prediction, binary_test_y))
 

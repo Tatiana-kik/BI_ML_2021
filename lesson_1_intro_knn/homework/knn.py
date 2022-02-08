@@ -99,26 +99,26 @@ class KNNClassifier:
         matrix_distance = np.abs(X[:, None] - self.train_X).sum(-1)
         return matrix_distance
 
-    def predict_labels_binary(self, distances):
-        """
-        Returns model predictions for binary classification case
-        
-        Arguments:
-        distances, np array (num_test_samples, num_train_samples) - array
-           with distances between each test and each train sample
-        Returns:
-        pred, np array of bool (num_test_samples) - binary predictions 
-           for every test sample
-        """
-
-        n_train = distances.shape[1]
-        n_test = distances.shape[0]
-        prediction = np.zeros(n_test)
-
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+    # def predict_labels_binary(self, distances):
+    #     """
+    #     Returns model predictions for binary classification case
+    #
+    #     Arguments:
+    #     distances, np array (num_test_samples, num_train_samples) - array
+    #        with distances between each test and each train sample
+    #     Returns:
+    #     pred, np array of bool (num_test_samples) - binary predictions
+    #        for every test sample
+    #     """
+    #
+    #     n_train = distances.shape[1]
+    #     n_test = distances.shape[0]
+    #     prediction = np.zeros(n_test)
+    #
+    #     """
+    #     YOUR CODE IS HERE
+    #     """
+    #     pass
 
 
     def predict_labels_multiclass(self, distances):

@@ -16,11 +16,9 @@ def binary_classification_metrics(y_pred, y_true):
     # https://en.wikipedia.org/wiki/Precision_and_recall
     # https://en.wikipedia.org/wiki/F1_score
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
-
+    metrics = {}
+    metrics['accuracy'] = multiclass_accuracy(y_pred, y_true)
+    return metrics
 
 def multiclass_accuracy(y_pred, y_true):
     """
@@ -32,10 +30,19 @@ def multiclass_accuracy(y_pred, y_true):
     accuracy - ratio of accurate predictions to total samples
     """
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    assert(len(y_pred) == len(y_true))
+    TP = [0] * 10
+    FP = [0] * 10
+    TN = [0] * 10
+    FN = [0] * 10
+    for cl in range(0, 10):
+        for i in range(0, len(y_true)):
+            TP[cl] += int((y_pred[i] == y_true[i]) & (y_pred[i] == str(cl)))
+            FP[cl] += int((y_pred[i] != y_true[i]) & (y_pred[i] == str(cl)))
+            TN[cl] += int((y_pred[i] == y_true[i]) & (y_pred[i] != str(cl)))
+            FN[cl] += int((y_pred[i] != y_true[i]) & (y_pred[i] != str(cl)))
+    accuracy = np.sum(TP) + np.sum(TN) / (np.sum(TP) + np.sum(TN) + np.sum(FP) + np.sum(FN))
+    return accuracy
 
 
 def r_squared(y_pred, y_true):
