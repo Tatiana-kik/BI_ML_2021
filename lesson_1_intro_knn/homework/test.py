@@ -19,12 +19,21 @@ idx_to_stay = np.random.choice(np.arange(X.shape[0]), replace=False, size=1000)
 X = X[idx_to_stay]
 y = y[idx_to_stay]
 x_train, x_test, y_train, y_test = train_test_split(X, y)
-criteria = (y_train == '1') | (y_train == '0')
-binary_train_y = y_train#[criteria]
-binary_train_X = x_train#[criteria]
-criteria_test = (y_test == '1') | (y_test == '0')
-binary_test_y = y_test#[criteria_test]
-binary_test_X = x_test#[criteria_test]
+switch = '1'
+binary_criteria = (y_train == '1') | (y_train == '0')
+if switch == '1':
+    binary_train_y = y_train[binary_criteria].astype(int)
+    binary_train_X = x_train[binary_criteria]
+else:
+    binary_train_y = y_train
+    binary_train_X = x_train
+binary_criteria_test = (y_test == '1') | (y_test == '0')
+if switch == '1':
+    binary_test_y = y_test[binary_criteria_test].astype(int)
+    binary_test_X = x_test[binary_criteria_test]
+else:
+    binary_test_y = y_test
+    binary_test_X = x_test
 import knn
 knn_classifier = KNNClassifier(k=3)
 knn_classifier.fit(binary_train_X, binary_train_y)
@@ -40,4 +49,14 @@ assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X
 # TODO: predict_labels_binary in knn.py
 prediction = knn_classifier.predict(binary_test_X)
 print(binary_classification_metrics(prediction, binary_test_y))
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+print(accuracy_score(binary_test_y, prediction, normalize=False))
+if switch == '1':
+    average_parameter = 'binary'
+else:
+    average_parameter = 'micro'
+print(precision_score(binary_test_y, prediction, average = average_parameter))
+print(recall_score(binary_test_y, prediction, average = average_parameter))
+print(f1_score(binary_test_y, prediction, average = average_parameter))
+
 
