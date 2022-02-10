@@ -6,8 +6,8 @@ import random
 import pandas as pd
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
-from knn import KNNClassifier
-from metrics import binary_classification_metrics, multiclass_accuracy
+# from knn import KNNClassifier
+from metrics import binary_classification_metrics, multiclass_accuracy, accuracy_per_class
 SEED = 666
 random.seed(SEED)
 np.random.seed(SEED)
@@ -35,28 +35,35 @@ else:
     binary_test_y = y_test
     binary_test_X = x_test
 import knn
-knn_classifier = KNNClassifier(k=3)
-knn_classifier.fit(binary_train_X, binary_train_y)
-# TODO: compute_distances_two_loops
-dists = knn_classifier.compute_distances_two_loops(binary_test_X)
-assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
-# TODO: compute_distances_one_loops
-dists = knn_classifier.compute_distances_one_loops(binary_test_X)
-assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
-# TODO: compute_distances_no_loops
-dists = knn_classifier.compute_distances_no_loops(binary_test_X)
-assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
-# TODO: predict_labels_binary in knn.py
-prediction = knn_classifier.predict(binary_test_X)
-print(binary_classification_metrics(prediction, binary_test_y))
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
-print(accuracy_score(binary_test_y, prediction, normalize=False))
-if switch == '1':
-    average_parameter = 'binary'
-else:
-    average_parameter = 'micro'
-print(precision_score(binary_test_y, prediction, average = average_parameter))
-print(recall_score(binary_test_y, prediction, average = average_parameter))
-print(f1_score(binary_test_y, prediction, average = average_parameter))
+# knn_classifier = KNNClassifier(k=3)
+# knn_classifier.fit(binary_train_X, binary_train_y)
+# # TODO: compute_distances_two_loops
+# dists = knn_classifier.compute_distances_two_loops(binary_test_X)
+# assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
+# # TODO: compute_distances_one_loops
+# dists = knn_classifier.compute_distances_one_loops(binary_test_X)
+# assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
+# # TODO: compute_distances_no_loops
+# dists = knn_classifier.compute_distances_no_loops(binary_test_X)
+# assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
+# # TODO: predict_labels_binary in knn.py
+# prediction = knn_classifier.predict(binary_test_X)
+# print(binary_classification_metrics(prediction, binary_test_y))
+# from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+# print(accuracy_score(binary_test_y, prediction, normalize=False))
+# if switch == '1':
+#     average_parameter = 'binary'
+# else:
+#     average_parameter = 'micro'
+# print(precision_score(binary_test_y, prediction, average = average_parameter))
+# print(recall_score(binary_test_y, prediction, average = average_parameter))
+# print(f1_score(binary_test_y, prediction, average = average_parameter))
+
+knn_classifier = knn.KNNClassifier(k=5)
+knn_classifier.fit(x_train, y_train)
+prediction_multiclass = knn_classifier.predict(x_test)
+acc_multiclass = accuracy_per_class(prediction_multiclass, y_test)
+# plt.plot(acc_binary)
+print(acc_multiclass)
 
 
