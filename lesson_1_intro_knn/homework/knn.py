@@ -10,12 +10,10 @@ class KNNClassifier:
     
     def __init__(self, k=1):
         self.k = k
-    
 
     def fit(self, X, y):
         self.train_X = X
         self.train_y = y
-
 
     def predict(self, X, n_loops=1):
         """
@@ -30,7 +28,6 @@ class KNNClassifier:
         predictions, np array of ints (num_samples) - predicted class
            for each sample
         """
-        
         if n_loops == 0:
             distances = self.compute_distances_no_loops(X)
         elif n_loops == 1:
@@ -75,7 +72,6 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
-
         num_test = X.shape[0]
         num_train = self.train_X.shape[0]
         matrix_distance = np.zeros((num_test, num_train))
@@ -95,7 +91,6 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
-
         matrix_distance = np.abs(X[:, None] - self.train_X).sum(-1)
         return matrix_distance
 
@@ -120,7 +115,6 @@ class KNNClassifier:
     #     """
     #     pass
 
-
     def predict_labels_multiclass(self, distances):
         """
         Returns model predictions for multi-class classification case
@@ -132,8 +126,6 @@ class KNNClassifier:
         pred, np array of int (num_test_samples) - predicted class index 
            for every test sample
         """
-
-        #n_train = distances.shape[0]
         n_test = distances.shape[0]
         prediction = ['']*n_test
         for t in range(0, n_test):

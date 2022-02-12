@@ -2,7 +2,7 @@ import numpy as np
 import statistics
 
 
-def binary_classification_metrics(y_pred, y_true):
+def binary_classification_metrics1(y_pred, y_true):
     """
     Computes metrics for binary classification
     Arguments:
@@ -18,10 +18,11 @@ def binary_classification_metrics(y_pred, y_true):
     # https://en.wikipedia.org/wiki/F1_score
 
     metrics = {}
-    metrics['accuracy'] = multiclass_accuracy(y_pred, y_true)
+    metrics['accuracy'] = multiclass_accuracy1(y_pred, y_true)
     return metrics
 
-def multiclass_accuracy(y_pred, y_true):
+
+def multiclass_accuracy1(y_pred, y_true):
     """
     Computes metrics for multiclass classification
     Arguments:
@@ -32,11 +33,12 @@ def multiclass_accuracy(y_pred, y_true):
     """
 
     assert(len(y_pred) == len(y_true))
-    TP = [0] * 10
-    FP = [0] * 10
-    TN = [0] * 10
-    FN = [0] * 10
-    for cl in range(0, 10):
+    number_of_classes = len(set(y_true))
+    TP = [0] * number_of_classes
+    FP = [0] * number_of_classes
+    TN = [0] * number_of_classes
+    FN = [0] * number_of_classes
+    for cl in range(0, number_of_classes):
         for i in range(0, len(y_true)):
             TP[cl] += int((y_pred[i] == y_true[i]) and str(y_pred[i]) == str(cl))
             FP[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) == str(cl))
@@ -44,7 +46,6 @@ def multiclass_accuracy(y_pred, y_true):
             FN[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) != str(cl))
     accuracy = np.sum(TP) + np.sum(TN) / (np.sum(TP) + np.sum(TN) + np.sum(FP) + np.sum(FN))
     return accuracy
-
 
 
 def accuracy_per_class(y_pred, y_true):
@@ -65,19 +66,12 @@ def accuracy_per_class(y_pred, y_true):
     FN = [0] * number_of_classes
     for cl in range(0, number_of_classes):
         for i in range(0, len(y_true)):
-            # TP[cl] += int((y_pred[i] == y_true[i]) & (y_pred[i] == cl))
-            # FP[cl] += int((y_pred[i] != y_true[i]) & (y_pred[i] == cl))
-            # TN[cl] += int((y_pred[i] == y_true[i]) & (y_pred[i] != cl))
-            # FN[cl] += int((y_pred[i] != y_true[i]) & (y_pred[i] != cl))
-
             TP[cl] += int(y_pred[i] == y_true[i] and str(y_pred[i]) == str(cl))
             FP[cl] += int(y_pred[i] != y_true[i] and str(y_pred[i]) == str(cl))
             TN[cl] += int(y_pred[i] == y_true[i] and str(y_pred[i]) != str(cl))
             FN[cl] += int(y_pred[i] != y_true[i] and str(y_pred[i]) != str(cl))
         accuracy[cl] = np.sum(TP[cl]) + np.sum(TN[cl]) / (np.sum(TP[cl]) + np.sum(TN[cl]) + np.sum(FP[cl]) + np.sum(FN[cl]))
-        pass
     return accuracy
-
 
 
 def r_squared1(y_pred, y_true):
@@ -136,4 +130,3 @@ def mae1(y_pred, y_true):
         value += abs(y_true[m] - y_pred[m])
     mae_calc = value / len(y_true)
     return mae_calc
-    

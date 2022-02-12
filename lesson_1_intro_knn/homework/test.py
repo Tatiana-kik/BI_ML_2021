@@ -6,8 +6,8 @@ import random
 import pandas as pd
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
-# from knn import KNNClassifier
-from metrics import binary_classification_metrics, multiclass_accuracy, accuracy_per_class, r_squared1
+from knn import KNNClassifier
+from metrics import binary_classification_metrics1, multiclass_accuracy1, accuracy_per_class, r_squared1
 SEED = 666
 random.seed(SEED)
 np.random.seed(SEED)
@@ -35,8 +35,8 @@ else:
     binary_test_y = y_test
     binary_test_X = x_test
 import knn
-# knn_classifier = KNNClassifier(k=3)
-# knn_classifier.fit(binary_train_X, binary_train_y)
+knn_classifier = KNNClassifier(k=3)
+knn_classifier.fit(binary_train_X, binary_train_y)
 # # TODO: compute_distances_two_loops
 # dists = knn_classifier.compute_distances_two_loops(binary_test_X)
 # assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
@@ -47,10 +47,10 @@ import knn
 # dists = knn_classifier.compute_distances_no_loops(binary_test_X)
 # assert np.isclose(dists[0, 100], np.sum(np.abs(binary_test_X[0] - binary_train_X[100])))
 # # TODO: predict_labels_binary in knn.py
-# prediction = knn_classifier.predict(binary_test_X)
-# print(binary_classification_metrics(prediction, binary_test_y))
-# from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
-# print(accuracy_score(binary_test_y, prediction, normalize=False))
+prediction = knn_classifier.predict(binary_test_X)
+print(binary_classification_metrics1(prediction, binary_test_y))
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+print(accuracy_score(binary_test_y, prediction, normalize=False))
 # if switch == '1':
 #     average_parameter = 'binary'
 # else:
@@ -65,19 +65,19 @@ import knn
 # acc_multiclass = accuracy_per_class(prediction_multiclass, y_test)
 # # plt.plot(acc_binary)
 # print(acc_multiclass)
-
-from sklearn.datasets import load_diabetes
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsRegressor
-X, y = load_diabetes(as_frame=True, return_X_y=True)
-from sklearn.pipeline import Pipeline
-x_train, x_test, y_train, y_test = train_test_split(X, y)
-regressorKN = KNeighborsRegressor(n_neighbors=5)
-pipelineRG = Pipeline(steps = [('regression', regressorKN)])
-pipelineRG.fit(x_train, y_train)
-print(r2_score(y_test, pipelineRG.predict(x_test)))
-print(pipelineRG.predict(x_test))
-print(r_squared1(pipelineRG.predict(x_test), y_test))
+#
+# from sklearn.datasets import load_diabetes
+# from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.neighbors import KNeighborsRegressor
+# X, y = load_diabetes(as_frame=True, return_X_y=True)
+# from sklearn.pipeline import Pipeline
+# x_train, x_test, y_train, y_test = train_test_split(X, y)
+# regressorKN = KNeighborsRegressor(n_neighbors=5)
+# pipelineRG = Pipeline(steps = [('regression', regressorKN)])
+# pipelineRG.fit(x_train, y_train)
+# print(r2_score(y_test, pipelineRG.predict(x_test)))
+# print(pipelineRG.predict(x_test))
+# print(r_squared1(pipelineRG.predict(x_test), y_test))
 
 
