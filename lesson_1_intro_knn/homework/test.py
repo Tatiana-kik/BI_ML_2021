@@ -65,7 +65,6 @@ print(accuracy_score(binary_test_y, prediction, normalize=False))
 # acc_multiclass = accuracy_per_class(prediction_multiclass, y_test)
 # # plt.plot(acc_binary)
 # print(acc_multiclass)
-#
 # from sklearn.datasets import load_diabetes
 # from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 # from sklearn.preprocessing import StandardScaler
@@ -79,5 +78,3 @@ print(accuracy_score(binary_test_y, prediction, normalize=False))
 # print(r2_score(y_test, pipelineRG.predict(x_test)))
 # print(pipelineRG.predict(x_test))
 # print(r_squared1(pipelineRG.predict(x_test), y_test))
-
-

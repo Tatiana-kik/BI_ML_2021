@@ -8,7 +8,7 @@ def binary_classification_metrics1(y_pred, y_true):
     Arguments:
     y_pred, np array (num_samples) - model predictions
     y_true, np array (num_samples) - true labels
-    Returns:
+    Return:
     precision, recall, f1, accuracy - classification metrics
     """
 
