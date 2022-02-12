@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 # from knn import KNNClassifier
-from metrics import binary_classification_metrics, multiclass_accuracy, accuracy_per_class
+from metrics import binary_classification_metrics, multiclass_accuracy, accuracy_per_class, r_squared1
 SEED = 666
 random.seed(SEED)
 np.random.seed(SEED)
@@ -59,11 +59,25 @@ import knn
 # print(recall_score(binary_test_y, prediction, average = average_parameter))
 # print(f1_score(binary_test_y, prediction, average = average_parameter))
 
-knn_classifier = knn.KNNClassifier(k=5)
-knn_classifier.fit(x_train, y_train)
-prediction_multiclass = knn_classifier.predict(x_test)
-acc_multiclass = accuracy_per_class(prediction_multiclass, y_test)
-# plt.plot(acc_binary)
-print(acc_multiclass)
+# knn_classifier = knn.KNNClassifier(k=5)
+# knn_classifier.fit(x_train, y_train)
+# prediction_multiclass = knn_classifier.predict(x_test)
+# acc_multiclass = accuracy_per_class(prediction_multiclass, y_test)
+# # plt.plot(acc_binary)
+# print(acc_multiclass)
+
+from sklearn.datasets import load_diabetes
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsRegressor
+X, y = load_diabetes(as_frame=True, return_X_y=True)
+from sklearn.pipeline import Pipeline
+x_train, x_test, y_train, y_test = train_test_split(X, y)
+regressorKN = KNeighborsRegressor(n_neighbors=5)
+pipelineRG = Pipeline(steps = [('regression', regressorKN)])
+pipelineRG.fit(x_train, y_train)
+print(r2_score(y_test, pipelineRG.predict(x_test)))
+print(pipelineRG.predict(x_test))
+print(r_squared1(pipelineRG.predict(x_test), y_test))
 
 
