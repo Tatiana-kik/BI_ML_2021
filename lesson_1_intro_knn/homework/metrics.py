@@ -19,6 +19,9 @@ def binary_classification_metrics1(y_pred, y_true):
 
     metrics = {}
     metrics['accuracy'] = multiclass_accuracy1(y_pred, y_true)
+    metrics['precision1'] = precision1(y_pred, y_true)
+    metrics['recall1'] = recall1(y_pred, y_true)
+    metrics['f1_score1'] = f1_score1(y_pred, y_true)
     return metrics
 
 
@@ -44,7 +47,7 @@ def multiclass_accuracy1(y_pred, y_true):
             FP[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) == str(cl))
             TN[cl] += int((y_pred[i] == y_true[i]) and str(y_pred[i]) != str(cl))
             FN[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) != str(cl))
-    accuracy = np.sum(TP) + np.sum(TN) / (np.sum(TP) + np.sum(TN) + np.sum(FP) + np.sum(FN))
+    accuracy = (np.sum(TP) + np.sum(TN)) / (np.sum(TP) + np.sum(TN) + np.sum(FP) + np.sum(FN))
     return accuracy
 
 
@@ -70,7 +73,8 @@ def accuracy_per_class(y_pred, y_true):
             FP[cl] += int(y_pred[i] != y_true[i] and str(y_pred[i]) == str(cl))
             TN[cl] += int(y_pred[i] == y_true[i] and str(y_pred[i]) != str(cl))
             FN[cl] += int(y_pred[i] != y_true[i] and str(y_pred[i]) != str(cl))
-        accuracy[cl] = np.sum(TP[cl]) + np.sum(TN[cl]) / (np.sum(TP[cl]) + np.sum(TN[cl]) + np.sum(FP[cl]) + np.sum(FN[cl]))
+        accuracy[cl] = (np.sum(TP[cl]) + np.sum(TN[cl])) / \
+                       (np.sum(TP[cl]) + np.sum(TN[cl]) + np.sum(FP[cl]) + np.sum(FN[cl]))
     return accuracy
 
 
@@ -130,3 +134,35 @@ def mae1(y_pred, y_true):
         value += abs(y_true[m] - y_pred[m])
     mae_calc = value / len(y_true)
     return mae_calc
+
+
+def precision1(y_pred, y_true):
+    assert(len(y_pred) == len(y_true))
+    number_of_classes = len(set(y_true))
+    TP = [0] * number_of_classes
+    FP = [0] * number_of_classes
+    for cl in range(0, number_of_classes):
+        for i in range(0, len(y_true)):
+            TP[cl] += int((y_pred[i] == y_true[i]) and str(y_pred[i]) == str(cl))
+            FP[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) == str(cl))
+    prec = np.sum(TP) / (np.sum(TP) + np.sum(FP))
+    return prec
+
+
+def recall1(y_pred, y_true):
+    assert(len(y_pred) == len(y_true))
+    number_of_classes = len(set(y_true))
+    TP = [0] * number_of_classes
+    FN = [0] * number_of_classes
+    for cl in range(0, number_of_classes):
+        for i in range(0, len(y_true)):
+            TP[cl] += int((y_pred[i] == y_true[i]) and str(y_pred[i]) == str(cl))
+            FN[cl] += int((y_pred[i] != y_true[i]) and str(y_pred[i]) != str(cl))
+    rec = np.sum(TP) / (np.sum(TP) + np.sum(FN))
+    return rec
+
+
+def f1_score1(y_pred, y_true):
+    assert(len(y_pred) == len(y_true))
+    return ((2 * precision1(y_pred, y_true) * recall1(y_pred, y_true)) / \
+           (precision1(y_pred, y_true) + recall1(y_pred, y_true)))
